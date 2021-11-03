@@ -528,6 +528,70 @@ describe('Testing the endpoint to create all items', () => {
   })
 });
 
+describe('Testing the endpoint to edit an item', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('todoList');
+    await db.collection('items').deleteMany({});
+  });
+
+  beforeEach(async () => {
+    await db.collection('items').deleteMany({});
+    const myObj = { description: 'Go to the supermarke' }
+    ;
+    await db.collection('items').insertOne(myObj);
+  });
+
+  afterEach(async () => {
+    await db.collection('items').deleteMany({});
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+  it('should return an error if the body is empty', async () => {
+    await frisby
+    .put(`${url}/todo-items`)
+    .expect('status', 422)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+      
+      const error = body.err;
+      const { message } = body.err;
+
+      expect(error.code).toEqual('invalid_data');
+      expect(message).toEqual('Invalid input')
+    })
+  });
+
+  it('should edit a task with no problems', async () => {
+    await frisby
+    .put(`${url}/todo-items`, {
+      description: 'Go to the supermarket'
+    })
+    .expect('status', 200)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+
+      const newDescription = body.description;
+      const status = body.status;
+
+      expect(newDescription).toEqual('Go to the supermarket');
+      expect(status).toEqual('pending');
+      expect(body).toHaveProperty('_id');
+    })
+  })
+})
+
 //   it('Será validado que é possível criar um produto com sucesso', async () => {
 //     await frisby
 //       .post(`${url}/products`, {
