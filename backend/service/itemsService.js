@@ -11,7 +11,7 @@ const validateInput = async (description, method, id) => {
     return responseCreate.ops[0];
   }
 
-  const responseModel = Model.getItemById();
+  const responseModel = await Model.getItemById();
   if(responseModel.length === 0) {
     responseError;
   }
@@ -19,6 +19,19 @@ const validateInput = async (description, method, id) => {
   return { _id: id, description };
 }
 
+const validateId = async (id) => {
+  const responseError = { message: 'Invalid input', error: true };
+
+  const responseModel = await Model.getItemById(id);
+
+  if(responseModel.length === 0) {
+    responseError;
+  }
+  const result = await Model.deleteItem(id);
+  return result
+};
+
 module.exports = {
   validateInput,
+  validateId,
 }

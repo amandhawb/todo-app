@@ -627,7 +627,78 @@ describe('Testing the endpoint to edit an item', () => {
       expect(body).toHaveProperty('_id');
     })
   })
-})
+});
+
+describe('Testing the endpoint to delete an item', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('todoList');
+    await db.collection('items').deleteMany({});
+  });
+
+  beforeEach(async () => {
+    await db.collection('items').deleteMany({});
+    const myObj = { description: 'Go to the supermarket' };
+    await db.collection('items').insertOne(myObj);
+  });
+
+  afterEach(async () => {
+    await db.collection('items').deleteMany({});
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+  it('should return an error if the id does not exist', async () => {
+    await frisby
+    .put(`${url}/todo-items/123`)
+    .expect('status', 422)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+
+      const error = body.err;
+      const { message } = body.err;
+
+      expect(error.code).toEqual('invalid_data');
+      expect(message).toEqual('Invalid input');
+    });
+  });
+
+  it('should delete a task with no problems', async () => {
+    let result; 
+    let resultItemId;
+
+    await frisby
+    .get(`${url}/todo-items/`)
+    .expect('status', 200)
+    .then((res) => {
+      const { body } = res
+      result = JSON.parse(body)
+      resultItemId = result.list[0]._id
+    });
+
+    await frisby
+    .delete(`${url}/todo-items/${resultItemId}`)
+    .expect('status', 200);
+
+    await frisby
+    .get(`${url}/todo-items`)
+    .expect('status', 200)
+    .then((res) => {
+      const { body } = res;
+      result = JSON.parse(body);
+      expect(result.list.length).toBe(0);
+    });
+  });
+});
 
 //   it('Será validado que é possível criar um produto com sucesso', async () => {
 //     await frisby

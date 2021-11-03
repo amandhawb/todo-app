@@ -43,10 +43,28 @@ const edit = async (req, res) => {
   }
 
   return res.status(200).json(valid)
-}
+};
+
+const deleteItem = async (req, res) => {
+  const { id } = req.params;
+  
+  const response = await Service.validateId(id);
+
+  if(response.error) {
+    return res.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: response.message
+      }
+    });
+  }
+
+  return res.status(200).json({ message: 'Item deleted.'})
+};
 
 module.exports = {
   getAll,
   create,
-  edit
+  edit,
+  deleteItem
 }

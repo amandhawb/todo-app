@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const getItemById = async (idParams) => {
-  const db = await connection;
+  const db = await connection();
   const item = await db.collection('items')
     .find({ _id: idParams}).toArray();
   return item
@@ -31,6 +31,14 @@ const editItem = async (newDescription, idParam) => {
       { description: newDescription, status: 'pending' }
     });
   return editedItem;
+};
+
+const deleteItem = async (idParam) => {
+  const db = await connection();
+
+  const deletedItem = await db.collection('items')
+    .deleteOne({ _id: ObjectId(idParam) });
+  return deletedItem
 }
 
 module.exports = {
@@ -38,4 +46,5 @@ module.exports = {
   createNewItem,
   editItem,
   getItemById,
+  deleteItem,
 }
