@@ -19,11 +19,7 @@ describe('Testing the endpoint to get all items', () => {
 
   beforeEach(async () => {
     await db.collection('items').deleteMany({});
-    const myObj = 
-      { description: 'Go to the supermarket' }
-      // { description: 'Read my book' }, 
-      // { description: 'Call to my best friend' }
-    ;
+    const myObj = { description: 'Go to the supermarket' };
     await db.collection('items').insertOne(myObj);
   });
 
@@ -469,4 +465,62 @@ describe('Testing the endpoint to get all items', () => {
   // });
 });
 
-//describe('')
+describe('Testing the endpoint to create all items', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('todoList');
+    await db.collection('items').deleteMany({});
+  });
+
+  beforeEach(async () => {
+    await db.collection('items').deleteMany({});
+    const myObj = { description: 'Go to the supermarket' }
+    ;
+    await db.collection('items').insertOne(myObj);
+  });
+
+  afterEach(async () => {
+    await db.collection('items').deleteMany({});
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+  it('should return an error if the body is empty', async () => {
+    await frisby
+    .post(`${url}/todo-items`)
+    .expect('status', 422)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+      const error = body.err;
+      const { message } = body.err;
+      expect(error.code).toEqual('invalid_data');
+      expect(message).toEqual('Invalid input')
+    })
+  });
+});
+
+//   it('Será validado que não é possível criar um produto com o mesmo nomede outro já existente', async () => {
+//     await frisby
+//       .post(`${url}/products/`, {
+//         name: 'Martelo de Thor',
+//         quantity: 100,
+//       })
+//       .expect('status', 422)
+//       .then((res) => {
+//         let { body } = res;
+//         body = JSON.parse(body);
+//         const error = body.err.code;
+//         const { message } = body.err;
+//         expect(error).toEqual('invalid_data');
+//         expect(message).toEqual('Product already exists');
+//       });
+//   });
