@@ -506,21 +506,41 @@ describe('Testing the endpoint to create all items', () => {
       expect(message).toEqual('Invalid input')
     })
   });
+
+  it('should create a new item with no problems', async () => {
+    await frisby
+    .post(`${url}/todo-items`, {
+      description: 'Call to my best friend'
+    })
+    .expect('status', 200)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+
+      const description = body.description;
+      const status = body.status;
+
+      expect(description).toEqual('Call to my best friend');
+      expect(status).toEqual('pending');
+
+      expect(body).toHaveProperty('_id');
+    })
+  })
 });
 
-//   it('Será validado que não é possível criar um produto com o mesmo nomede outro já existente', async () => {
+//   it('Será validado que é possível criar um produto com sucesso', async () => {
 //     await frisby
-//       .post(`${url}/products/`, {
-//         name: 'Martelo de Thor',
-//         quantity: 100,
+//       .post(`${url}/products`, {
+//         name: 'Arco do Gavião Arqueiro',
+//         quantity: 1,
 //       })
-//       .expect('status', 422)
+//       .expect('status', 201)
 //       .then((res) => {
 //         let { body } = res;
 //         body = JSON.parse(body);
-//         const error = body.err.code;
-//         const { message } = body.err;
-//         expect(error).toEqual('invalid_data');
-//         expect(message).toEqual('Product already exists');
+//         const productName = body.name;
+//         const quantityProduct = body.quantity;
+//         expect(productName).toEqual('Arco do Gavião Arqueiro');
+//         expect(quantityProduct).toEqual(1);
+//         expect(body).toHaveProperty('_id');
 //       });
-//   });
