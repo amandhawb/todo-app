@@ -1,7 +1,7 @@
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
-const mongoDbUrl = 'mongodb://mongodb:27017/todoList';
+const mongoDbUrl = 'mongodb://localhost/todoList';
 const url = 'http://localhost:3000';
 
 describe('Get all items from todo list', () => {
@@ -19,12 +19,12 @@ describe('Get all items from todo list', () => {
 
   beforeEach(async () => {
     await db.collection('items').deleteMany({});
-    const myObj = [
-      { description: 'Go to the supermarket' },
-      { description: 'Read my book' }, 
-      { description: 'Call to my best friend' }
-    ];
-    await db.collection('items').insertMany(myObj);
+    const myObj = 
+      { description: 'Go to the supermarket' }
+      // { description: 'Read my book' }, 
+      // { description: 'Call to my best friend' }
+    ;
+    await db.collection('items').insertOne(myObj);
   });
 
   afterEach(async () => {
@@ -54,12 +54,14 @@ describe('Get all items from todo list', () => {
       .then((res) => {
         let { body } = res;
         body = JSON.parse(body);
-        const firstItem = body.description[0];
-        const secondItem = body.description[1];
-        const thirdItem = body.description[2];
+        console.log(body, 'resultado body')
+        const firstItem = body.list[0].description;
+        console.log(firstItem, 'resultado firstitem')
+        // const secondItem = body.description[1];
+        // const thirdItem = body.description[2];
         expect(firstItem).toEqual('Go to the supermarket');
-        expect(secondItem).toEqual('Read my book');
-        expect(thirdItem).toEqual('Call to my best friend');
+        // expect(secondItem).toEqual('Read my book');
+        // expect(thirdItem).toEqual('Call to my best friend');
       });
   });
 
