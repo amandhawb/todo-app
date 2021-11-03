@@ -4,7 +4,7 @@ const { MongoClient } = require('mongodb');
 const mongoDbUrl = 'mongodb://localhost/todoList';
 const url = 'http://localhost:3000';
 
-describe('Get all items from todo list', () => {
+describe('Testing the endpoint to get all items', () => {
   let connection;
   let db;
 
@@ -56,12 +56,7 @@ describe('Get all items from todo list', () => {
         body = JSON.parse(body);
         console.log(body, 'resultado body')
         const firstItem = body.list[0].description;
-        console.log(firstItem, 'resultado firstitem')
-        // const secondItem = body.description[1];
-        // const thirdItem = body.description[2];
         expect(firstItem).toEqual('Go to the supermarket');
-        // expect(secondItem).toEqual('Read my book');
-        // expect(thirdItem).toEqual('Call to my best friend');
       });
   });
 
@@ -473,3 +468,5 @@ describe('Get all items from todo list', () => {
   //     });
   // });
 });
+
+//describe('')

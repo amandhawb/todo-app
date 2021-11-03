@@ -2,7 +2,6 @@ const Model = require('../model/itemsModel');
 
 const validateInput = async (description) => {
   const responseError = { message: 'Invalid input', error: true };
-  console.log('entrou aqui -- service')
 
   if(!description) {
     return responseError

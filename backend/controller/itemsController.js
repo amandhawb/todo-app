@@ -6,9 +6,6 @@ const Service = require('../service/itemsService');
 
 const create = async (req, res) => {
   const { description } = req.body;
-
-  console.log('entrou aqi - controller')
-
   const valid = await Service.validateInput(description);
 
   if(valid.error) {

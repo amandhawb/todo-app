@@ -1,17 +1,10 @@
 const connection = require('./connection');
 
 const createNewItem = async (description) => {
-  console.log('entrou aqui -- model')
-  
-  try {
-    const db = await connection();
-    const insertedItem = await db.collection('items')
-      .insertOne({ description, status: 'pending' });
-    return insertedItem;
-  } catch (error) {
-    console.log(error)
-  }
-
+  const db = await connection();
+  const insertedItem = await db.collection('items')
+    .insertOne({ description, status: 'pending' });
+  return insertedItem;
 }
 
 const getAll = async () => {
