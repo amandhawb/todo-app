@@ -11,6 +11,10 @@ const validateInput = async (description, method, id) => {
     return responseCreate.ops[0];
   }
 
+  const responseModel = Model.getItemById();
+  if(responseModel.length === 0) {
+    responseError;
+  }
   await Model.editItem(description, id);
   return { _id: id, description };
 }

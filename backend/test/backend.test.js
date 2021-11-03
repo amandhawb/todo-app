@@ -579,7 +579,23 @@ describe('Testing the endpoint to edit an item', () => {
       const { message } = body.err;
 
       expect(error.code).toEqual('invalid_data');
-      expect(message).toEqual('Invalid input')
+      expect(message).toEqual('Invalid input');
+    })
+  });
+
+  it('should return an error if the id passed on params doesn`t exist', async () => {
+    await frisby
+    .put(`${url}/todo-items/123`)
+    .expect('status', 422)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+
+      const error = body.err;
+      const { message } = body.err;
+
+      expect(error.code).toEqual('invalid_data');
+      expect(message).toEqual('Invalid input');
     })
   });
 
