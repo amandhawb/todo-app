@@ -50,7 +50,6 @@ describe('Testing the endpoint to get all items', () => {
       .then((res) => {
         let { body } = res;
         body = JSON.parse(body);
-        console.log(body, 'resultado body')
         const firstItem = body.list[0].description;
         expect(firstItem).toEqual('Go to the supermarket');
       });
@@ -557,13 +556,25 @@ describe('Testing the endpoint to edit an item', () => {
   });
 
   it('should return an error if the body is empty', async () => {
+    let result;
+    let resultItemId;
+
     await frisby
-    .put(`${url}/todo-items`)
+    .get(`${url}/todo-items/`)
+    .expect('status', 200)
+    .then((res) => {
+      const { body } = res;
+      result = JSON.parse(body);
+      resultItemId = result.list[0]._id;
+    });
+
+    await frisby
+    .put(`${url}/todo-items/${resultItemId}`)
     .expect('status', 422)
     .then((res) => {
       let { body } = res;
       body = JSON.parse(body);
-      
+
       const error = body.err;
       const { message } = body.err;
 
@@ -573,8 +584,20 @@ describe('Testing the endpoint to edit an item', () => {
   });
 
   it('should edit a task with no problems', async () => {
+    let result;
+    let resultItemId;
+
     await frisby
-    .put(`${url}/todo-items`, {
+    .get(`${url}/todo-items/`)
+    .expect('status', 200)
+    .then((res) => {
+      const { body } = res;
+      result = JSON.parse(body);
+      resultItemId = result.list[0]._id;
+    });
+
+    await frisby
+    .put(`${url}/todo-items/${resultItemId}`, {
       description: 'Go to the supermarket'
     })
     .expect('status', 200)
@@ -583,10 +606,8 @@ describe('Testing the endpoint to edit an item', () => {
       body = JSON.parse(body);
 
       const newDescription = body.description;
-      const status = body.status;
 
       expect(newDescription).toEqual('Go to the supermarket');
-      expect(status).toEqual('pending');
       expect(body).toHaveProperty('_id');
     })
   })

@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const createNewItem = async (description) => {
@@ -15,7 +16,18 @@ const getAll = async () => {
   return allItems;
 }
 
+const editItem = async (newDescription, idParam) => {
+  const db = await connection();
+
+  const editedItem = await db.collection('items')
+    .updateOne({ _id: ObjectId(idParam) }, { $set: 
+      { description: newDescription, status: 'pending' }
+    });
+  return editedItem;
+}
+
 module.exports = {
   getAll,
   createNewItem,
+  editItem,
 }
