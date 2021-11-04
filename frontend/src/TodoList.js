@@ -1,9 +1,14 @@
+import React from "react";
+import TodoListItem from "./TodoListItem";
+
 class TodoList extends React.Component {
   render() {
     const { items } = this.props;
 
+    console.log(`TodoList: ${items}`);
+
     const todoListItems = items.map((item, index) => {
-      <TodoListItem
+      return <TodoListItem
         key={item._id}
         _id={item._id}
         text={item.text}
@@ -13,6 +18,8 @@ class TodoList extends React.Component {
       />
     });
 
-    return <ul callName="list-group">{todoListItems}</ul>;
+    return <ul className="list-group">{todoListItems}</ul>;
   }
 }
+
+export default TodoList;

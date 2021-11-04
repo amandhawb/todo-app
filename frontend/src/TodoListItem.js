@@ -1,3 +1,5 @@
+import React from "react";
+
 class TodoListItem extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,8 @@ class TodoListItem extends React.Component {
   }
 
   render() {
+    console.log('O LIST ITEM ENTROU')
+
     let todoCssClassName = this.props.status === 'DONE' ? 'done' : 'undone';
 
     return (
@@ -37,3 +41,5 @@ class TodoListItem extends React.Component {
     );
   }
 }
+
+export default TodoListItem;

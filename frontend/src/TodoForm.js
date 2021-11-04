@@ -1,3 +1,5 @@
+import React from "react";
+
 class TodoForm extends React.Component {
   constructor(props) {
     super(props);
@@ -16,11 +18,11 @@ class TodoForm extends React.Component {
 
   handleOnChange(event) {
     this.setState({
-      tex: event.target.value
+      text: event.target.value
     });
   }
 
-  handleButtonClick(event) {
+  handleButtonClick() {
     let text = this.state.text;
 
     if(text !== '') {
@@ -51,3 +53,5 @@ class TodoForm extends React.Component {
     );
   }
 }
+
+export default TodoForm;
