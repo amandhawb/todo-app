@@ -51,9 +51,11 @@ class TodoApp extends React.Component {
     const responseBackEnd = {
       _id: Math.random(),
       text: text,
-      status: 'UNDOONE'
+      status: 'UNDONE'
     };
     const newTodoItems = this.state.items;
+
+    console.log('OLHA ESSE', newTodoItems)
 
     newTodoItems.unshift(responseBackEnd);
     this.setState({
@@ -61,18 +63,20 @@ class TodoApp extends React.Component {
     });
   }
 
-  // handleRemoveItem(id) {
-  //   // futuramente chamar o backend (DELETE)
-  //   console.log(`HandleRemoveItem ${id}`);
+  handleRemoveItem(id) {
+    // futuramente chamar o backend (DELETE)
+    console.log(`HandleRemoveItem ${id}`);
 
-  //   //TEMPORARIO
-  //   const newTodoItems = this.state.items;
-  //   newTodoItems.splice(itemIndex, 1);
+    console.log('AQUIIII', this.state.items)
 
-  //   this.setState({
-  //     items: newTodoItems
-  //   });
-  // }
+    // //TEMPORARIO
+    const newTodoItems = this.state.items;
+    newTodoItems.splice(id);
+
+    this.setState({
+      items: newTodoItems
+    });
+  }
 
   // handleMarkDone(id) {
   //   // futuramente chamar o backend (POST) e recebe um novo status

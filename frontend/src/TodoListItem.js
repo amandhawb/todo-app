@@ -17,8 +17,6 @@ class TodoListItem extends React.Component {
   }
 
   render() {
-    console.log('O LIST ITEM ENTROU')
-
     let todoCssClassName = this.props.status === 'DONE' ? 'done' : 'undone';
 
     return (

@@ -5,8 +5,6 @@ class TodoList extends React.Component {
   render() {
     const { items } = this.props;
 
-    console.log(`TodoList: ${items}`);
-
     const todoListItems = items.map((item, index) => {
       return <TodoListItem
         key={item._id}
