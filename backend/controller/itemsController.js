@@ -46,6 +46,24 @@ const edit = async (req, res) => {
   return res.status(200).json(valid)
 };
 
+const editStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const editedStatus = await Service.editStatus(id, status);
+
+  if(!editedStatus) {
+    return res.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: valid.message,
+      },
+    });
+  }
+
+  return res.status(200).json(editedStatus)
+};
+
 const deleteItem = async (req, res) => {
   const { id } = req.params;
   
@@ -67,5 +85,6 @@ module.exports = {
   getAll,
   create,
   edit,
-  deleteItem
+  deleteItem,
+  editStatus
 }

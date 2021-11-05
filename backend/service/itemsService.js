@@ -20,6 +20,11 @@ const validateInput = async (description, method, id) => {
   return { _id: id, description };
 }
 
+const editStatus = async (id, status) => {
+  await Model.editStatus(id, status);
+  return { _id: id, status }
+};
+
 const validateId = async (id) => {
   const responseError = { message: 'Invalid input', error: true };
 
@@ -35,4 +40,5 @@ const validateId = async (id) => {
 module.exports = {
   validateInput,
   validateId,
+  editStatus,
 }

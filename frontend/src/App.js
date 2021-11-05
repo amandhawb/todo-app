@@ -8,8 +8,8 @@ class TodoApp extends React.Component {
     super(props);
   
     this.handleAddItem = this.handleAddItem.bind(this);
-    // this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    // this.handleMarkDone = this.handleMarkDone.bind(this);
+    this.handleRemoveItem = this.handleRemoveItem.bind(this);
+    this.handleMarkDone = this.handleMarkDone.bind(this);
 
     this.state = {
       items: []
@@ -43,37 +43,51 @@ class TodoApp extends React.Component {
     });
   }
 
-  handleRemoveItem(id) {
-    // futuramente chamar o backend (DELETE)
-    console.log(`HandleRemoveItem ${id}`);
+  async handleRemoveItem(id) {
+    const requestOptions = {
+      method: 'DELETE'
+    }
 
-    //console.log('AQUIIII', this.state.items)
+    await fetch(`http://localhost:3000/todo-items/${id}`, requestOptions);
 
-    //const newTodoItems = this.state.items;
+    const newTodoItems = this.state.items;
+    const itemToBeDeleted = newTodoItems.find((item) => item._id === id);
+    const indexToBeDeleted = newTodoItems.indexOf(itemToBeDeleted);
 
-    // //TEMPORARIO
-    // const newTodoItems = this.state.items;
-    // newTodoItems.splice(id);
-    // this.setState({
-    //   items: newTodoItems
-    // });
+    newTodoItems.splice(indexToBeDeleted);
+    this.setState({
+      items: newTodoItems
+    });
   }
 
-  // handleMarkDone(id) {
-  //   // futuramente chamar o backend (POST) e recebe um novo status
+  async handleMarkDone(id) {
+    const newTodoItems = this.state.items;
+    const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
 
-  //   let todo = todoItems[itemIndex];
+    let newStatus;
 
-  //   todoItems.splice(itemIndex, 1);
+    if(itemToBeUpdated.status === 'pending') {
+      newStatus = 'progress';
+    } else if(itemToBeUpdated.status === 'progress') {
+      newStatus = 'done';
+    } else if(itemToBeUpdated.status === 'done') {
+      newStatus = 'pending';
+    }
 
-  //   todo.done = !todo.done;
+    itemToBeUpdated.status = newStatus;
 
-  //   todo.done ? todoItems.push(todo) : todoItems.unshift(todo);
+    const requestOptions = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    }
 
-  //   this.setState({
-  //     todoItems: todoItems
-  //   });
-  // }
+    await fetch(`http://localhost:3000/todo-items/${id}/update-status`, requestOptions)
+
+    this.setState({
+      items: newTodoItems
+    });
+  }
 
   render() {
     return (
