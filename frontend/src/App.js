@@ -8,7 +8,7 @@ class TodoApp extends React.Component {
     super(props);
   
     this.handleAddItem = this.handleAddItem.bind(this);
-    // this.handleRemoveItem = this.handleRemoveItem.bind(this);
+    this.handleRemoveItem = this.handleRemoveItem.bind(this);
     // this.handleMarkDone = this.handleMarkDone.bind(this);
 
     this.state = {
@@ -43,20 +43,21 @@ class TodoApp extends React.Component {
     });
   }
 
-  handleRemoveItem(id) {
-    // futuramente chamar o backend (DELETE)
-    console.log(`HandleRemoveItem ${id}`);
+  async handleRemoveItem(id) {
+    const requestOptions = {
+      method: 'DELETE'
+    }
 
-    //console.log('AQUIIII', this.state.items)
+    await fetch(`http://localhost:3000/todo-items/${id}`, requestOptions);
 
-    //const newTodoItems = this.state.items;
-
-    // //TEMPORARIO
-    // const newTodoItems = this.state.items;
-    // newTodoItems.splice(id);
-    // this.setState({
-    //   items: newTodoItems
-    // });
+    const newTodoItems = this.state.items;
+    const itemToBeDeleted = newTodoItems.find((item) => item._id === id);
+    const indexToBeDeleted = newTodoItems.indexOf(itemToBeDeleted);
+    
+    newTodoItems.splice(indexToBeDeleted);
+    this.setState({
+      items: newTodoItems
+    });
   }
 
   // handleMarkDone(id) {
