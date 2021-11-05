@@ -61,21 +61,20 @@ class TodoApp extends React.Component {
   }
 
   handleMarkDone(id) {
-    console.log('id mark donoe ---> ', id)
-  const newTodoItems = this.state.items;
-  const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
+    const newTodoItems = this.state.items;
+    const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
 
-  let newStatus;
+    let newStatus;
 
-  if(itemToBeUpdated.status === 'pending') {
-    newStatus = 'progress';
-  } else if(itemToBeUpdated.status === 'progress') {
-    newStatus = 'done';
-  } else if(itemToBeUpdated.status === 'done') {
-    newStatus = 'pending';
-  }
+    if(itemToBeUpdated.status === 'pending') {
+      newStatus = 'progress';
+    } else if(itemToBeUpdated.status === 'progress') {
+      newStatus = 'done';
+    } else if(itemToBeUpdated.status === 'done') {
+      newStatus = 'pending';
+    }
 
-  itemToBeUpdated.status = newStatus
+    itemToBeUpdated.status = newStatus
 
     this.setState({
       items: newTodoItems

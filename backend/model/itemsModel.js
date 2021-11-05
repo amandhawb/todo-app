@@ -33,6 +33,16 @@ const editItem = async (newDescription, idParam) => {
   return editedItem;
 };
 
+const editStatus = async (idParam, newStatus) => {
+  const db = await connection();
+
+  const editedStatus = await db.collection('items')
+    .updateOne( { _id: ObjectId(idParam) }, { $set: 
+      { status: newStatus }
+    });
+  return editedStatus;
+}
+
 const deleteItem = async (idParam) => {
   const db = await connection();
 
@@ -47,4 +57,5 @@ module.exports = {
   editItem,
   getItemById,
   deleteItem,
+  editStatus
 }

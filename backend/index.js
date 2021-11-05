@@ -15,3 +15,4 @@ app.post('/todo-items', ItemsController.create);
 app.get('/todo-items', ItemsController.getAll);
 app.put('/todo-items/:id', ItemsController.edit);
 app.delete('/todo-items/:id', ItemsController.deleteItem);
+app.put('/todo-items/:id/update-status', ItemsController.editStatus);
