@@ -19,11 +19,7 @@ describe('Testing the endpoint to get all items', () => {
 
   beforeEach(async () => {
     await db.collection('items').deleteMany({});
-    const myObj = 
-      { description: 'Go to the supermarket' }
-      // { description: 'Read my book' }, 
-      // { description: 'Call to my best friend' }
-    ;
+    const myObj = { description: 'Go to the supermarket' };
     await db.collection('items').insertOne(myObj);
   });
 
@@ -469,4 +465,82 @@ describe('Testing the endpoint to get all items', () => {
   // });
 });
 
-//describe('')
+describe('Testing the endpoint to create all items', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('todoList');
+    await db.collection('items').deleteMany({});
+  });
+
+  beforeEach(async () => {
+    await db.collection('items').deleteMany({});
+    const myObj = { description: 'Go to the supermarket' }
+    ;
+    await db.collection('items').insertOne(myObj);
+  });
+
+  afterEach(async () => {
+    await db.collection('items').deleteMany({});
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+  it('should return an error if the body is empty', async () => {
+    await frisby
+    .post(`${url}/todo-items`)
+    .expect('status', 422)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+      const error = body.err;
+      const { message } = body.err;
+      expect(error.code).toEqual('invalid_data');
+      expect(message).toEqual('Invalid input')
+    })
+  });
+
+  it('should create a new item with no problems', async () => {
+    await frisby
+    .post(`${url}/todo-items`, {
+      description: 'Call to my best friend'
+    })
+    .expect('status', 200)
+    .then((res) => {
+      let { body } = res;
+      body = JSON.parse(body);
+
+      const description = body.description;
+      const status = body.status;
+
+      expect(description).toEqual('Call to my best friend');
+      expect(status).toEqual('pending');
+
+      expect(body).toHaveProperty('_id');
+    })
+  })
+});
+
+//   it('Será validado que é possível criar um produto com sucesso', async () => {
+//     await frisby
+//       .post(`${url}/products`, {
+//         name: 'Arco do Gavião Arqueiro',
+//         quantity: 1,
+//       })
+//       .expect('status', 201)
+//       .then((res) => {
+//         let { body } = res;
+//         body = JSON.parse(body);
+//         const productName = body.name;
+//         const quantityProduct = body.quantity;
+//         expect(productName).toEqual('Arco do Gavião Arqueiro');
+//         expect(quantityProduct).toEqual(1);
+//         expect(body).toHaveProperty('_id');
+//       });
