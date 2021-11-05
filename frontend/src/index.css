@@ -1,0 +1,45 @@
+html,
+body {
+  height: 100%;
+  color: #61dafb;
+  background: #2d2d2d;
+}
+
+h1 {
+  margin: 20px 0;
+}
+
+#main {
+  width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* TextBox */
+.form-inline .form-control {
+  width: 50%;
+  margin-left: 80px;
+}
+
+/* Todo Items */
+
+ul {
+  list-style: none;
+}
+
+ul > li:hover {
+  background-color: #f5f5f5;
+}
+
+.done {
+  color: red;
+  text-decoration: line-through;
+}
+
+.undone {
+  color: #61dafb;
+}
+
+.icon {
+  margin: 6px 10px 6px 0;
+}
