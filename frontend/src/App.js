@@ -55,7 +55,7 @@ class TodoApp extends React.Component {
     const itemToBeDeleted = newTodoItems.find((item) => item._id === id);
     const indexToBeDeleted = newTodoItems.indexOf(itemToBeDeleted);
 
-    newTodoItems.splice(indexToBeDeleted);
+    newTodoItems.splice(indexToBeDeleted, 1);
     this.setState({
       items: newTodoItems
     });
