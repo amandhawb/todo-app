@@ -60,7 +60,7 @@ class TodoApp extends React.Component {
     });
   }
 
-  handleMarkDone(id) {
+  async handleMarkDone(id) {
     const newTodoItems = this.state.items;
     const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
 
@@ -74,7 +74,15 @@ class TodoApp extends React.Component {
       newStatus = 'pending';
     }
 
-    itemToBeUpdated.status = newStatus
+    itemToBeUpdated.status = newStatus;
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    }
+
+    await fetch(`http://localhost:3000/todo-items/${id}/update-status`, requestOptions)
 
     this.setState({
       items: newTodoItems
