@@ -1,4 +1,12 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
+
+const getItemById = async (idParams) => {
+  const db = await connection();
+  const item = await db.collection('items')
+    .find({ _id: idParams}).toArray();
+  return item
+};
 
 const createNewItem = async (description) => {
   const db = await connection();
@@ -15,7 +23,28 @@ const getAll = async () => {
   return allItems;
 }
 
+const editItem = async (newDescription, idParam) => {
+  const db = await connection();
+
+  const editedItem = await db.collection('items')
+    .updateOne({ _id: ObjectId(idParam) }, { $set: 
+      { description: newDescription, status: 'pending' }
+    });
+  return editedItem;
+};
+
+const deleteItem = async (idParam) => {
+  const db = await connection();
+
+  const deletedItem = await db.collection('items')
+    .deleteOne({ _id: ObjectId(idParam) });
+  return deletedItem
+}
+
 module.exports = {
   getAll,
   createNewItem,
+  editItem,
+  getItemById,
+  deleteItem,
 }
