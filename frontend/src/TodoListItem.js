@@ -6,6 +6,14 @@ class TodoListItem extends React.Component {
 
     this.handleClickDelete = this.handleClickDelete.bind(this);
     this.handleClickMarkDone = this.handleClickMarkDone.bind(this);
+    this.handleEditItemState = this.handleEditItemState.bind(this);
+    this.handleEditItem = this.handleEditItem.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+
+    this.state = {
+      isEditing: false,
+      newDescription: this.props.description,
+    };
   };
 
   handleClickDelete() {
@@ -16,7 +24,47 @@ class TodoListItem extends React.Component {
     this.props.markTodoDoneFn(this.props.id);
   }
 
+  handleEditItemState() {
+    this.setState({
+      isEditing: true
+    });
+  }
+
+  handleOnChange(event) {
+    this.setState({
+      newDescription: event.target.value
+    })
+  }
+
+  handleEditItem() {
+    const { id } = this.props;
+    const { newDescription } = this.state;
+    this.props.editItemFn(id, newDescription)
+
+    this.setState({
+      isEditing: false
+    })
+  }
+
   render() {
+    if(this.state.isEditing) {
+      return (
+        <li className="list-group-item">
+          <div>
+            <input
+              type="text"
+              value={this.state.newDescription}
+              onChange={this.handleOnChange}
+            />
+            <span
+              className="glyphicon glyphicon-floppy-disk"
+              onClick={this.handleEditItem}
+            >
+            </span>
+          </div>
+        </li>
+      )
+    }
     let itemCssClassName;
 
     if(this.props.status === 'pending') {
@@ -35,6 +83,11 @@ class TodoListItem extends React.Component {
             onClick={this.handleClickMarkDone}>
           </span>
           {this.props.description}
+          <span
+            className="glyphicon glyphicon-pencil pencil"
+            onClick={this.handleEditItemState}
+          >
+          </span>
           <button
             type="button"
             className="close"

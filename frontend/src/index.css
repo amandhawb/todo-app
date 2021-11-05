@@ -41,7 +41,11 @@ ul > li:hover {
 }
 
 .in-progress {
-  color: black;
+  color: #FFBA01;
+}
+
+.pencil {
+  padding: 10px
 }
 
 .icon {

@@ -12,6 +12,7 @@ class TodoList extends React.Component {
         status={item.status}
         removeItemFn = { this.props.removeItemFn }
         markTodoDoneFn = { this.props.markTodoDoneFn }
+        editItemFn={this.props.editItemFn}
       />
     });
 

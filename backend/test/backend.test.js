@@ -161,7 +161,7 @@ describe('Testing the endpoint to edit an item', () => {
     });
 
     await frisby
-    .put(`${url}/todo-items/${resultItemId}`)
+    .put(`${url}/todo-items/${resultItemId}/update-description`)
     .expect('status', 422)
     .then((res) => {
       let { body } = res;
@@ -177,7 +177,7 @@ describe('Testing the endpoint to edit an item', () => {
 
   it('should return an error if the id passed on params doesn`t exist', async () => {
     await frisby
-    .put(`${url}/todo-items/123`)
+    .put(`${url}/todo-items/123/update-description`)
     .expect('status', 422)
     .then((res) => {
       let { body } = res;
@@ -205,7 +205,7 @@ describe('Testing the endpoint to edit an item', () => {
     });
 
     await frisby
-    .put(`${url}/todo-items/${resultItemId}`, {
+    .put(`${url}/todo-items/${resultItemId}/update-description`, {
       description: 'Go to the supermarket'
     })
     .expect('status', 200)

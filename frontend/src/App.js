@@ -10,6 +10,7 @@ class TodoApp extends React.Component {
     this.handleAddItem = this.handleAddItem.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
     this.handleMarkDone = this.handleMarkDone.bind(this);
+    this.handleEditItem = this.handleEditItem.bind(this);
 
     this.state = {
       items: []
@@ -89,6 +90,25 @@ class TodoApp extends React.Component {
     });
   }
 
+  async handleEditItem(id, newDescription) {
+    const newTodoItems = this.state.items;
+    const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
+
+    itemToBeUpdated.description = newDescription;
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({ description: newDescription })
+    };
+
+    await fetch(`http://localhost:3000/todo-items/${id}/update-description`, requestOptions)
+
+    this.setState({
+      items: newTodoItems
+    });
+  }
+
   render() {
     return (
       <div id="main">
@@ -97,6 +117,7 @@ class TodoApp extends React.Component {
           items={this.state.items}
           removeItemFn={this.handleRemoveItem}
           markTodoDoneFn={this.handleMarkDone}
+          editItemFn={this.handleEditItem}
         />
         <TodoForm
           addItemFn={this.handleAddItem}
