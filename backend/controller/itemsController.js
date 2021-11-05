@@ -6,6 +6,7 @@ const Service = require('../service/itemsService');
 
 const create = async (req, res) => {
   const { description } = req.body;
+  console.log('create ---> body:', req.body)
   const { method } = req;
   const valid = await Service.validateInput(description, method);
 

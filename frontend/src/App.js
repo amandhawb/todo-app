@@ -16,48 +16,28 @@ class TodoApp extends React.Component {
     };
   };
 
-  componentDidMount() {
-    // futuramente chamar backend (getAll) e atualizar o state
-
-    const sampleItems = [
-      {
-        _id: 1,
-        text: 'Item 1',
-        status: 'DONE'
-      },
-      {
-        _id: 2,
-        text: 'Item 2',
-        status: 'NOT_DONE'
-      },
-      {
-        _id: 3,
-        text: 'Item 3',
-        status: 'DONE'
-      }
-    ];
+  async componentDidMount() {
+    const response = await fetch('http://localhost:3000/todo-items');
+    const data = await response.json();
 
     this.setState({
-      items: sampleItems
+      items: data.list
     });
-
   }
 
-  handleAddItem(text) {
-    // futuramente chamar o backend (POST)
-    console.log(`HandleAddItem ${text}`);
-
-    // TEMPORARIO
-    const responseBackEnd = {
-      _id: Math.random(),
-      text: text,
-      status: 'UNDONE'
+  async handleAddItem(text) {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({ description: text })
     };
+
+    const response = await fetch('http://localhost:3000/todo-items', requestOptions);
+    const data = await response.json();
+  
     const newTodoItems = this.state.items;
 
-    console.log('OLHA ESSE', newTodoItems)
-
-    newTodoItems.unshift(responseBackEnd);
+    newTodoItems.unshift(data);
     this.setState({
       items: newTodoItems
     });
@@ -67,15 +47,16 @@ class TodoApp extends React.Component {
     // futuramente chamar o backend (DELETE)
     console.log(`HandleRemoveItem ${id}`);
 
-    console.log('AQUIIII', this.state.items)
+    //console.log('AQUIIII', this.state.items)
+
+    //const newTodoItems = this.state.items;
 
     // //TEMPORARIO
-    const newTodoItems = this.state.items;
-    newTodoItems.splice(id);
-
-    this.setState({
-      items: newTodoItems
-    });
+    // const newTodoItems = this.state.items;
+    // newTodoItems.splice(id);
+    // this.setState({
+    //   items: newTodoItems
+    // });
   }
 
   // handleMarkDone(id) {
@@ -95,8 +76,6 @@ class TodoApp extends React.Component {
   // }
 
   render() {
-    console.log('renderizou');
-    console.log('ESSE E O STATE:', this.state.items)
     return (
       <div id="main">
         <TodoHeader />

@@ -9,7 +9,7 @@ class TodoListItem extends React.Component {
   };
 
   handleClickDelete() {
-    this.props.removeItemFn(this.props._id);
+    this.props.removeItemFn(this.props.id);
   }
 
   handleClickMarkDone() {
@@ -19,6 +19,7 @@ class TodoListItem extends React.Component {
   render() {
     let todoCssClassName = this.props.status === 'DONE' ? 'done' : 'undone';
 
+
     return (
       <li className="list-group-item">
         <div className={todoCssClassName}>
@@ -26,7 +27,7 @@ class TodoListItem extends React.Component {
             className="glyphicon glyphicon-ok icon"
             onClick={this.handleClickMarkDone}>
           </span>
-          {this.props.text}
+          {this.props.description}
           <button
             type="button"
             className="close"

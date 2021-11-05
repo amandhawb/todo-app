@@ -2,10 +2,11 @@ const Model = require('../model/itemsModel');
 
 const validateInput = async (description, method, id) => {
   const responseError = { message: 'Invalid input', error: true };
-
+  console.log('validate input --- description:', description)
   if(!description || description === '') {
     return responseError
   };
+
   if(method === 'POST') {
     const responseCreate = await Model.createNewItem(description);
     return responseCreate.ops[0];
