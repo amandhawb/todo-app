@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class TodoForm extends React.Component {
   constructor(props) {
@@ -8,26 +8,26 @@ class TodoForm extends React.Component {
     this.handleOnChange = this.handleOnChange.bind(this);
 
     this.state = {
-      text: ''
+      text: '',
     };
   }
 
-  //componentDidMount() {
-    //colocar foco no elemento
-  //}
+  // componentDidMount() {
+  // colocar foco no elemento
+  // }
 
   handleOnChange(event) {
     this.setState({
-      text: event.target.value
+      text: event.target.value,
     });
   }
 
   handleButtonClick() {
-    let text = this.state.text;
+    const { text } = this.state;
 
-    if(text !== '') {
+    if (text !== '') {
       this.props.addItemFn(text);
-      this.setState({ text: '' })
+      this.setState({ text: '' });
     }
   }
 
@@ -36,19 +36,19 @@ class TodoForm extends React.Component {
       <form className="form-inline">
         <input
           type="text"
-          onChange={this.handleOnChange}
+          onChange={ this.handleOnChange }
           className="form-control"
           placeholder="Add a new todo..."
-          value={this.state.text}
+          value={ this.state.text }
         />
         <button
           type="button"
-          onClick={this.handleButtonClick}
+          onClick={ this.handleButtonClick }
           className="btn btn-default"
         >
           Adicionar
         </button>
-        
+
       </form>
     );
   }
