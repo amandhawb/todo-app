@@ -13,16 +13,23 @@ class TodoListItem extends React.Component {
   }
 
   handleClickMarkDone() {
-    this.props.markTodoDoneFn(this.props._id);
+    this.props.markTodoDoneFn(this.props.id);
   }
 
   render() {
-    let todoCssClassName = this.props.status === 'DONE' ? 'done' : 'undone';
+    let itemCssClassName;
 
+    if(this.props.status === 'pending') {
+      itemCssClassName = 'pending';
+    } else if(this.props.status === 'progress') {
+      itemCssClassName = 'in-progress';
+    } else if(this.props.status === 'done') {
+      itemCssClassName = 'done';
+    }
 
     return (
       <li className="list-group-item">
-        <div className={todoCssClassName}>
+        <div className={itemCssClassName}>
           <span
             className="glyphicon glyphicon-ok icon"
             onClick={this.handleClickMarkDone}>

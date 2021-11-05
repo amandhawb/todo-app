@@ -36,8 +36,12 @@ ul > li:hover {
   text-decoration: line-through;
 }
 
-.undone {
+.pending {
   color: #61dafb;
+}
+
+.in-progress {
+  color: black;
 }
 
 .icon {

@@ -9,7 +9,7 @@ class TodoApp extends React.Component {
   
     this.handleAddItem = this.handleAddItem.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    // this.handleMarkDone = this.handleMarkDone.bind(this);
+    this.handleMarkDone = this.handleMarkDone.bind(this);
 
     this.state = {
       items: []
@@ -53,28 +53,34 @@ class TodoApp extends React.Component {
     const newTodoItems = this.state.items;
     const itemToBeDeleted = newTodoItems.find((item) => item._id === id);
     const indexToBeDeleted = newTodoItems.indexOf(itemToBeDeleted);
-    
+
     newTodoItems.splice(indexToBeDeleted);
     this.setState({
       items: newTodoItems
     });
   }
 
-  // handleMarkDone(id) {
-  //   // futuramente chamar o backend (POST) e recebe um novo status
+  handleMarkDone(id) {
+    console.log('id mark donoe ---> ', id)
+  const newTodoItems = this.state.items;
+  const itemToBeUpdated = newTodoItems.find((item) => item._id === id);
 
-  //   let todo = todoItems[itemIndex];
+  let newStatus;
 
-  //   todoItems.splice(itemIndex, 1);
+  if(itemToBeUpdated.status === 'pending') {
+    newStatus = 'progress';
+  } else if(itemToBeUpdated.status === 'progress') {
+    newStatus = 'done';
+  } else if(itemToBeUpdated.status === 'done') {
+    newStatus = 'pending';
+  }
 
-  //   todo.done = !todo.done;
+  itemToBeUpdated.status = newStatus
 
-  //   todo.done ? todoItems.push(todo) : todoItems.unshift(todo);
-
-  //   this.setState({
-  //     todoItems: todoItems
-  //   });
-  // }
+    this.setState({
+      items: newTodoItems
+    });
+  }
 
   render() {
     return (
