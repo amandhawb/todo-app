@@ -57,7 +57,7 @@ class TodoListItem extends React.Component {
               onChange={ this.handleOnChange }
             />
             <span
-              className="glyphicon glyphicon-floppy-disk"
+              className="glyphicon glyphicon-floppy-disk save"
               onClick={ this.handleEditItem }
             />
           </div>

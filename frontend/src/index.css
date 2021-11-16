@@ -48,6 +48,10 @@ ul > li:hover {
   padding: 10px
 }
 
+.save {
+  padding: 10px
+}
+
 .icon {
   margin: 6px 10px 6px 0;
 }
