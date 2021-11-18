@@ -17,6 +17,6 @@
     "start": "node index.js",
     "test": "jest"
   },
-  "author": "",
+  "author": "Amandha",
   "license": "ISC"
 }
